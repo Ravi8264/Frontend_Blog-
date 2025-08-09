@@ -1,0 +1,244 @@
+.profile-container {
+  background-color: #0b0f19;
+  color: #e5e7eb;
+  font-size: 1.2rem;
+  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+  margin-top: 20px;
+}
+
+/* Light Theme for Profile Info */
+body.light-theme .profile-container {
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+body.light-theme .profile-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .profile-header h1 {
+  color: #1f2937;
+}
+
+body.light-theme .profile-section h2 {
+  color: #1f2937;
+}
+
+body.light-theme .profile-info {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+body.light-theme .profile-field label {
+  color: #374151;
+}
+
+body.light-theme .profile-field input,
+body.light-theme .profile-field textarea {
+  border: 1px solid #d1d5db;
+  color: #1f2937;
+  background-color: #ffffff;
+}
+
+body.light-theme .profile-field input:focus,
+body.light-theme .profile-field textarea:focus {
+  border-color: #3b82f6;
+  background-color: #ffffff;
+}
+
+body.light-theme .roles-list {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+}
+
+body.light-theme .role-badge {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.profile-card {
+  background-color: #0f172a;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.profile-header {
+  margin-bottom: 40px;
+  border-bottom: 2px solid #374151;
+  padding-bottom: 20px;
+}
+
+.profile-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: #f9fafb;
+  letter-spacing: 1px;
+}
+
+.profile-subtitle {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+.profile-section {
+  margin-bottom: 35px;
+  padding: 25px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  background-color: #0b1220;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #f9fafb;
+  text-align: left;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 10px;
+}
+
+.profile-info-item {
+  margin-bottom: 15px;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.profile-info-label {
+  color: #f9fafb;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.role-badge {
+  display: inline-block;
+  background-color: #e5e7eb;
+  color: #0b0f19;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+}
+
+.no-roles {
+  color: #94a3b8;
+  font-style: italic;
+  text-align: left;
+}
+
+.roles-status-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.roles-section {
+  flex: 1;
+  padding: 25px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  background-color: #0b1220;
+}
+
+.status-section {
+  flex: 1;
+  padding: 25px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  background-color: #0b1220;
+}
+
+.status-active {
+  color: #0b0f19;
+  font-weight: bold;
+  background-color: #e5e7eb;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.loading-container {
+  background-color: #0b0f19;
+  color: #e5e7eb;
+  text-align: center;
+  font-size: 1.2rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-container {
+  background-color: #0b0f19;
+  color: #e5e7eb;
+  text-align: center;
+  font-size: 1.2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-profile-container {
+  background-color: #0b0f19;
+  color: #e5e7eb;
+  text-align: center;
+  font-size: 1.2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 15px;
+  }
+  
+  .profile-card {
+    padding: 20px;
+  }
+  
+  .profile-title {
+    font-size: 2rem;
+  }
+  
+  .profile-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  .profile-info-item {
+    font-size: 1rem;
+  }
+  
+  .role-badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+  
+  .roles-status-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

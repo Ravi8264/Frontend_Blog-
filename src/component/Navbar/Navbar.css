@@ -1,0 +1,262 @@
+.navbar {
+  padding: 15px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  background: #0b0f19;
+  transition: all 0.3s ease;
+}
+
+
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.navbar-logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: white;
+  letter-spacing: -0.5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  position: relative;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.navbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Theme Toggle Button - Always Same Style */
+.theme-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 6px !important;
+  width: auto !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.2rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  padding: 10px 15px !important;
+  color: white !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.theme-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+/* Ensure theme button stays same on light theme */
+body.light-theme .theme-toggle-btn {
+  color: white !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-theme .theme-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.logout-btn {
+  background: #dc2626;
+  border: 1px solid #dc2626;
+  cursor: pointer;
+  font-size: inherit;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+/* Admin-only links styling */
+.admin-link {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.admin-link:hover {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
+}
+
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.navbar-hamburger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.navbar-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 350px;
+  height: 100vh;
+  background: #0b0f19;
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.navbar-mobile-link {
+  text-decoration: none;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-mobile-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Mobile Theme Toggle Button - Always Same Style */
+.navbar-mobile-link.theme-toggle-btn {
+  background: transparent !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  margin: 0 !important;
+  text-align: left !important;
+  font-weight: 500 !important;
+  font-size: 1.1rem !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+  padding: 15px !important;
+}
+
+.navbar-mobile-link.theme-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+/* Ensure mobile theme button stays same on light theme */
+body.light-theme .navbar-mobile-link.theme-toggle-btn {
+  color: white !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-theme .navbar-mobile-link.theme-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.navbar-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-close:hover {
+  color: #ff6b6b;
+  transform: rotate(90deg);
+}
+
+/* Override navbar background when Posts page sets full dark theme */
+body.posts-dark .navbar {
+  background: #0b0f19;
+}
+
+body.posts-dark .navbar-mobile-menu {
+  background: #0b0f19;
+}
+
+/* Dark navbar on auth page */
+body.auth-dark .navbar {
+  background: #0b0f19;
+}
+
+body.auth-dark .navbar-mobile-menu {
+  background: #0b0f19;
+}
+
+/* Also dark on Addpost route */
+body.addpost-dark .navbar {
+  background: #0b0f19;
+}
+body.addpost-dark .navbar-mobile-menu {
+  background: #0b0f19;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 24px;
+  }
+  
+  .navbar-menu {
+    display: none;
+  }
+  
+  .navbar-hamburger {
+    display: flex;
+  }
+  
+  .navbar-mobile-menu {
+    display: flex;
+    right: 0;
+  }
+}
