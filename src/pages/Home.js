@@ -89,7 +89,7 @@ const Home = () => {
         errorMessage = "Server error. Please try again later.";
       } else if (error.message.includes("Network Error")) {
         errorMessage =
-          "Cannot connect to server. Please check if the backend is running on http://localhost:8080";
+          "Cannot connect to server. Please check if the backend is running.";
       } else if (error.message) {
         errorMessage = `Failed to load posts: ${error.message}`;
       }

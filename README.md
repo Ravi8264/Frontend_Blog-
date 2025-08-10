@@ -9,6 +9,7 @@ A full-featured, responsive blog platform built with React.js, featuring dark/li
 ## 🚀 Features
 
 ### ✨ Core Features
+
 - **🔐 User Authentication**: Secure login/signup with JWT tokens
 - **📝 Post Management**: Create, edit, delete blog posts with rich text editor
 - **💬 Comments System**: Add comments to posts with user authentication
@@ -17,6 +18,7 @@ A full-featured, responsive blog platform built with React.js, featuring dark/li
 - **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile
 
 ### 🎨 Modern UI/UX
+
 - **🌙 Dark/Light Theme Toggle**: Switch between themes with one click
 - **🎯 Auto-scrolling Carousel**: Smooth image carousel on homepage
 - **💫 Modern Animations**: Smooth transitions and hover effects
@@ -24,6 +26,7 @@ A full-featured, responsive blog platform built with React.js, featuring dark/li
 - **📐 Clean Layout**: Professional, minimalist design
 
 ### 🛡️ Security & Performance
+
 - **🔒 JWT Authentication**: Secure token-based authentication
 - **💾 IndexedDB Storage**: Client-side storage for auth tokens
 - **🔄 Auto Token Refresh**: Automatic token renewal system
@@ -82,34 +85,42 @@ react-blog/
 ## 📦 Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - npm or yarn
 - Backend API server running
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/Ravi8264/Frontend_Blog-.git
 cd Frontend_Blog-
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Environment Setup
+
 Create a `.env` file in the root directory:
+
 ```env
-REACT_APP_API_BASE_URL=http://localhost:8080/api
+REACT_APP_API_BASE_URL=http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api
 ```
 
 ### 4. Start Development Server
+
 ```bash
 npm start
 ```
+
 The app will run on `http://localhost:3000`
 
 ### 5. Build for Production
+
 ```bash
 npm run build
 ```
@@ -117,29 +128,34 @@ npm run build
 ## 🎯 Key Pages & Features
 
 ### 🏠 Home Page
+
 - Auto-scrolling hero carousel
 - Featured posts carousel
 - Responsive design with theme support
 - Contact information integration
 
 ### 📝 Posts Page
+
 - Complete post listing with pagination
 - Search functionality
 - Comment system
 - Post management (edit/delete for authors)
 
 ### 👤 Authentication
+
 - Login/Signup forms
 - Password validation
 - JWT token management
 - Automatic token refresh
 
 ### ⚙️ Admin Features
+
 - Category management
 - User role management
 - Post moderation capabilities
 
 ### 🎨 Theme System
+
 - Global dark/light theme toggle
 - Persistent theme preference
 - Smooth theme transitions
@@ -148,13 +164,17 @@ npm run build
 ## 🔧 Configuration
 
 ### API Integration
+
 The app is configured to work with a Spring Boot backend. Update the base URL in services files:
 
 ```javascript
-const BASE_URL = "http://localhost:8080/api/v1";
+const BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api/v1";
 ```
 
 ### Theme Customization
+
 Themes can be customized in individual CSS files using CSS variables:
 
 ```css
@@ -194,6 +214,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Developer
 
 **Ravi Shankar Kumar**
+
 - 📧 Email: ravicse19.23@gmail.com
 - 📱 Phone: 8709931070
 - 🔗 GitHub: [@Ravi8264](https://github.com/Ravi8264)
