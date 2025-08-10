@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Frontend_Blog-/static/css/main.f8a12334.css",
+    "main.js": "/Frontend_Blog-/static/js/main.3879f45d.js",
+    "static/media/thought-catalog-505eectW54k-unsplash.jpg": "/Frontend_Blog-/static/media/thought-catalog-505eectW54k-unsplash.509312e6af224438ad7c.jpg",
+    "static/media/pexels-pixabay-326212.jpg": "/Frontend_Blog-/static/media/pexels-pixabay-326212.175e6fdbeae3e03d92cf.jpg",
+    "static/media/ben-kolde-FaPxZ88yZrw-unsplash.jpg": "/Frontend_Blog-/static/media/ben-kolde-FaPxZ88yZrw-unsplash.d5576c2794153dec0598.jpg",
+    "static/media/jess-bailey-q10VITrVYUM-unsplash.jpg": "/Frontend_Blog-/static/media/jess-bailey-q10VITrVYUM-unsplash.ac99598c7a30a636f38f.jpg",
+    "static/media/pexels-pixabay-45853.jpg": "/Frontend_Blog-/static/media/pexels-pixabay-45853.46c0fb524c4e03e91b37.jpg",
+    "static/media/pexels-jovana-nesic-188639-593655.jpg": "/Frontend_Blog-/static/media/pexels-jovana-nesic-188639-593655.5d284453336fdcd52da0.jpg",
+    "static/media/pexels-andreas-gusicov-785963761-30959064.jpg": "/Frontend_Blog-/static/media/pexels-andreas-gusicov-785963761-30959064.a6936c5cffbb38752458.jpg",
+    "static/media/113094-OOJRXS-328.jpg": "/Frontend_Blog-/static/media/113094-OOJRXS-328.df141fc912fdd48508ab.jpg",
+    "static/media/image.png": "/Frontend_Blog-/static/media/image.69713797401650ad6d17.png",
+    "static/media/pexels-longlens-30294241.jpg": "/Frontend_Blog-/static/media/pexels-longlens-30294241.540dcfdfd9e15f8f5a6a.jpg",
+    "static/media/pexels-philippedonn-1133957.jpg": "/Frontend_Blog-/static/media/pexels-philippedonn-1133957.4ebded0adc02425907e3.jpg",
+    "static/media/pexels-pixabay-326055.jpg": "/Frontend_Blog-/static/media/pexels-pixabay-326055.99f5cc560facb27912ba.jpg",
+    "static/media/pexels-pixabay-206359.jpg": "/Frontend_Blog-/static/media/pexels-pixabay-206359.f57ccd73989ce6620d4e.jpg",
+    "index.html": "/Frontend_Blog-/index.html",
+    "main.f8a12334.css.map": "/Frontend_Blog-/static/css/main.f8a12334.css.map",
+    "main.3879f45d.js.map": "/Frontend_Blog-/static/js/main.3879f45d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f8a12334.css",
+    "static/js/main.3879f45d.js"
+  ]
+}
