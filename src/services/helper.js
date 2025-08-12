@@ -2,7 +2,7 @@
 import axios from "axios";
 import { currentApiConfig } from "../config/api";
 
-// Use configuration from api.js
+// Use configuration from api.js - ALWAYS HTTP, NEVER HTTPS
 export const BASE_URL = currentApiConfig.baseURL;
 
 export const myAxios = axios.create({

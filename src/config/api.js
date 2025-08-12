@@ -1,10 +1,15 @@
 // API Configuration for different environments
+// ALL ENVIRONMENTS: Direct HTTP calls to backend
+//
+// Note: This will cause Mixed Content warnings in HTTPS production
+// but will work if browser allows insecure content
 const API_CONFIG = {
   development: {
     baseURL: "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
     timeout: 10000,
   },
   production: {
+    // Direct HTTP calls - same as development
     baseURL:
       process.env.REACT_APP_API_URL ||
       "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
@@ -12,7 +17,8 @@ const API_CONFIG = {
   },
   staging: {
     baseURL:
-      process.env.REACT_APP_API_URL || "https://your-staging-api-url.com",
+      process.env.REACT_APP_API_URL ||
+      "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
     timeout: 12000,
   },
 };

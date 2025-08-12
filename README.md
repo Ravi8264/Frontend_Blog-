@@ -108,7 +108,7 @@ npm install
 Create a `.env` file in the root directory:
 
 ```env
-REACT_APP_API_BASE_URL=http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api
+REACT_APP_API_BASE_URL=https://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api
 ```
 
 ### 4. Start Development Server
@@ -170,7 +170,7 @@ The app is configured to work with a Spring Boot backend. Update the base URL in
 ```javascript
 const BASE_URL =
   process.env.REACT_APP_API_URL ||
-  "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api/v1";
+  "https://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api/v1";
 ```
 
 ### Theme Customization
