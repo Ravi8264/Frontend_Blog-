@@ -215,7 +215,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Ravi Shankar Kumar**
 
-- 📧 Email: ravicse19.23@gmail.com
+- 📧 Email: ravi.kumar@thinkvista.in
 - 📱 Phone: 8709931070
 - 🔗 GitHub: [@Ravi8264](https://github.com/Ravi8264)
 

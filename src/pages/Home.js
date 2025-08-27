@@ -35,7 +35,8 @@ const Home = () => {
   });
   const carouselRef = useRef(null);
   const cardStepRef = useRef(0);
-  const loopedPosts = posts.length > 0 ? [...posts, ...posts] : [];
+  // Show only actual posts without duplication
+  const displayPosts = posts;
 
   useEffect(() => {
     initializeData();
@@ -60,25 +61,15 @@ const Home = () => {
       try {
         const user = await getCurrentUser();
         setCurrentUser(user);
-        console.log("Current user loaded:", user);
       } catch (userError) {
-        console.log(
-          "No user logged in, continuing as guest:",
-          userError.message
-        );
+        // No user logged in, continuing as guest
         setCurrentUser(null);
       }
 
       // Fetch initial posts
       await fetchPosts();
     } catch (error) {
-      console.error("Error initializing data:", error);
-      console.error("Error details:", {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-      });
+      // Error initializing data
 
       let errorMessage = "Failed to load posts. Please try again.";
 
@@ -102,21 +93,12 @@ const Home = () => {
 
   const fetchPosts = async () => {
     try {
-      console.log("Fetching posts with params:", {
-        pageNumber: pagination.pageNumber,
-        pageSize: pagination.pageSize,
-        sortBy: "createdDate",
-        sortDir: "desc",
-      });
-
       const response = await getAllPosts(
         pagination.pageNumber,
         pagination.pageSize,
         "createdDate",
         "desc"
       );
-
-      console.log("Posts response:", response);
 
       setPosts(response.content || []);
       setPagination((prev) => ({
@@ -127,13 +109,7 @@ const Home = () => {
         firstPage: response.firstPage || true,
       }));
     } catch (error) {
-      console.error("Error fetching posts:", error);
-      console.error("Fetch posts error details:", {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-      });
+      // Error fetching posts
       toast.error(`Failed to load posts: ${error.message}`);
     }
   };
@@ -155,7 +131,7 @@ const Home = () => {
         firstPage: true,
       }));
     } catch (error) {
-      console.error("Error searching posts:", error);
+      // Error searching posts
       toast.error("Failed to search posts");
     }
   };
@@ -230,46 +206,30 @@ const Home = () => {
     return placeholderImg;
   };
 
-  // Manual scroll buttons (optional - agar chahiye toh rakh sakte hain)
+  // Removed carousel-related functions and useEffect hooks
+
+  // Manual scroll buttons
   const scrollCarousel = (direction) => {
     const el = carouselRef.current;
     if (!el) return;
 
-    const amount = cardStepRef.current || Math.floor(el.clientWidth * 0.9);
-    const half = el.scrollWidth / 2;
+    const amount = cardStepRef.current || Math.floor(el.clientWidth * 0.8);
 
     if (direction === "right") {
-      if (el.scrollLeft + amount >= half - 5) {
-        el.scrollLeft = el.scrollLeft - half;
-      }
       el.scrollBy({ left: amount, behavior: "smooth" });
     } else {
-      if (el.scrollLeft - amount <= 0) {
-        el.scrollLeft = el.scrollLeft + half;
-      }
       el.scrollBy({ left: -amount, behavior: "smooth" });
     }
   };
 
-  // Fixed auto-scroll - working version
+  // Auto-scroll carousel
   useEffect(() => {
     const el = carouselRef.current;
     if (!el || posts.length === 0) {
-      console.log("❌ Auto-scroll skipped:", {
-        element: !!el,
-        postsLength: posts.length,
-      });
       return;
     }
 
-    console.log("🚀 Auto-scroll initializing...", {
-      postsCount: posts.length,
-      element: el,
-      scrollWidth: el.scrollWidth,
-      clientWidth: el.clientWidth,
-    });
-
-    // Card width calculate karo
+    // Calculate card width
     const calculateCardWidth = () => {
       const firstCard = el.querySelector(".carousel-item");
       if (firstCard) {
@@ -279,57 +239,32 @@ const Home = () => {
         const width = Math.ceil(
           firstCard.offsetWidth + marginLeft + marginRight
         );
-        console.log("📏 Card width calculated:", width);
         return width;
       }
-      const fallback = Math.floor(el.clientWidth * 0.8);
-      console.log("📏 Card width fallback:", fallback);
-      return fallback;
+      return Math.floor(el.clientWidth * 0.8);
     };
 
-    // Wait for DOM to be ready and force scroll
+    // Wait for DOM to be ready
     setTimeout(() => {
       cardStepRef.current = calculateCardWidth();
-
-      console.log("📊 Scroll dimensions:", {
-        scrollWidth: el.scrollWidth,
-        clientWidth: el.clientWidth,
-        cardStep: cardStepRef.current,
-        hasOverflow: el.scrollWidth > el.clientWidth,
-      });
-
-      // Force auto-scroll even with few posts for testing
-      console.log(`✅ Starting auto-scroll with ${posts.length} posts`);
 
       let autoScrollTimer = null;
       let scrollPosition = 0;
       let isActive = true;
 
-      // Enhanced auto-scroll function - more aggressive
+      // Auto-scroll function
       const autoScroll = () => {
         if (!isActive || !el) {
-          console.log("❌ Auto-scroll inactive or element missing");
           return;
         }
 
-        const scrollAmount = 300; // Reduced scroll amount for smoother movement
+        const scrollAmount = 200; // Smaller scroll amount
         const maxScroll = el.scrollWidth - el.clientWidth;
 
-        console.log("🔄 Auto-scrolling...", {
-          currentScrollLeft: el.scrollLeft,
-          scrollPosition,
-          scrollAmount,
-          maxScroll,
-          totalWidth: el.scrollWidth,
-          isActive,
-        });
-
-        // Increment scroll position
         scrollPosition += scrollAmount;
 
         // Reset if we've gone too far
-        if (scrollPosition >= maxScroll || scrollPosition >= el.scrollWidth) {
-          console.log("🔄 Resetting to start");
+        if (scrollPosition >= maxScroll) {
           scrollPosition = 0;
         }
 
@@ -339,36 +274,15 @@ const Home = () => {
             left: scrollPosition,
             behavior: "smooth",
           });
-          console.log(`📍 Scrolled to position: ${scrollPosition}`);
         } catch (error) {
-          console.error("❌ Scroll error:", error);
+          // Scroll error occurred
         }
       };
 
-      // Start timer - 2 seconds for quick testing
-      console.log("🚀 Creating auto-scroll timer...");
+      // Start auto-scroll timer
       autoScrollTimer = setInterval(() => {
-        console.log("⏰ Timer fired! Calling autoScroll...");
         autoScroll();
-      }, 1500); // Faster scrolling for better visibility
-      console.log("✅ Auto-scroll timer created:", autoScrollTimer);
-
-      // Manual test scroll after 1 second
-      setTimeout(() => {
-        console.log("🧪 Manual test scroll...");
-        el.scrollTo({ left: 300, behavior: "smooth" });
-      }, 1000);
-
-      // Test if timer is working after 3 seconds
-      setTimeout(() => {
-        console.log("🔍 Timer check - is timer still active?", autoScrollTimer);
-      }, 3000);
-
-      // Immediate test of autoScroll function
-      setTimeout(() => {
-        console.log("🧪 Testing autoScroll function directly...");
-        autoScroll();
-      }, 2500);
+      }, 2000); // Scroll every 2 seconds
 
       // Cleanup function
       return () => {
@@ -376,15 +290,9 @@ const Home = () => {
         if (autoScrollTimer) {
           clearInterval(autoScrollTimer);
           autoScrollTimer = null;
-          console.log("🛑 Auto-scroll timer cleared and deactivated");
         }
       };
-    }, 500); // Longer delay to ensure everything is loaded
-  }, [posts.length]); // Re-run when posts change
-
-  // Debug useEffect triggers
-  useEffect(() => {
-    console.log("🔄 useEffect triggered - posts.length changed:", posts.length);
+    }, 500);
   }, [posts.length]);
 
   // const renderContent = (content) => content || ""; // unused
@@ -480,108 +388,110 @@ const Home = () => {
           </div>
         ) : (
           <>
-            <div
-              className={`posts-carousel-wrapper ${
-                posts.length >= 4 ? "has-many-posts" : ""
-              }`}
-            >
-              <button
-                type="button"
-                className="carousel-btn left"
-                onClick={() => scrollCarousel("left")}
-                aria-label="Previous"
-              >
-                ‹
-              </button>
-              <div className="posts-carousel" ref={carouselRef}>
-                {loopedPosts.map((post, i) => (
-                  <div
-                    key={`${post.id}-${i}`}
-                    className="story-card carousel-item"
-                    onClick={() => navigate(`/posts`)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        navigate(`/posts`);
-                      }
-                    }}
-                  >
-                    {/* Image with Hover Overlay */}
-                    <div className="story-image">
-                      <img
-                        src={resolvePostImage(post)}
-                        alt={post.title}
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = placeholderImg;
-                        }}
-                      />
-                      <div className="story-overlay">
-                        <div className="story-badges">
-                          <span className="story-category">
-                            {post.category?.title || "Uncategorized"}
-                          </span>
-                          {post.user?.roles && (
-                            <span className="story-role">
-                              {getUserRole(post.user.roles)}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content Area - Below Image */}
-                    <div className="story-content">
-                      <div className="story-main">
-                        <h3 className="story-title">{post.title}</h3>
-                        <p className="story-excerpt">
-                          {truncateContent(post.content, 80)}
-                        </p>
-                      </div>
-
-                      <div className="story-footer">
-                        <div className="story-meta">
-                          <span className="story-author">
-                            By {post.user?.name || "Unknown"}
-                          </span>
-                          <span className="story-date">
-                            {formatDate(post.createdDate)}
-                          </span>
-                        </div>
-
-                        <div className="story-actions">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/posts`);
-                            }}
-                            className="story-view-btn"
-                          >
-                            View Posts
-                          </button>
-                          {post.comments && post.comments.length > 0 && (
-                            <span className="story-comments">
-                              {post.comments.length} comment
-                              {post.comments.length !== 1 ? "s" : ""}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            <div className="compact-posts-carousel">
+              <div className="carousel-header">
+                <h2>Latest Posts</h2>
+                <p>Discover our community's latest content</p>
               </div>
-              <button
-                type="button"
-                className="carousel-btn right"
-                onClick={() => scrollCarousel("right")}
-                aria-label="Next"
-              >
-                ›
-              </button>
+
+              <div className="posts-carousel-wrapper">
+                <button
+                  type="button"
+                  className="carousel-btn left"
+                  onClick={() => scrollCarousel("left")}
+                  aria-label="Previous"
+                >
+                  ‹
+                </button>
+                <div className="posts-carousel" ref={carouselRef}>
+                  {displayPosts.map((post, i) => (
+                    <div
+                      key={`${post.id}-${i}`}
+                      className="story-card carousel-item"
+                      onClick={() => navigate(`/posts`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          navigate(`/posts`);
+                        }
+                      }}
+                    >
+                      {/* Image with Hover Overlay */}
+                      <div className="story-image">
+                        <img
+                          src={resolvePostImage(post)}
+                          alt={post.title}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = placeholderImg;
+                          }}
+                        />
+                        <div className="story-overlay">
+                          <div className="story-badges">
+                            <span className="story-category">
+                              {post.category?.title || "Uncategorized"}
+                            </span>
+                            {post.user?.roles && (
+                              <span className="story-role">
+                                {getUserRole(post.user.roles)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Content Area - Below Image */}
+                      <div className="story-content">
+                        <div className="story-main">
+                          <h3 className="story-title">{post.title}</h3>
+                          <p className="story-excerpt">
+                            {truncateContent(post.content, 60)}
+                          </p>
+                        </div>
+
+                        <div className="story-footer">
+                          <div className="story-meta">
+                            <span className="story-author">
+                              By {post.user?.name || "Unknown"}
+                            </span>
+                            <span className="story-date">
+                              {formatDate(post.createdDate)}
+                            </span>
+                          </div>
+
+                          <div className="story-actions">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/posts`);
+                              }}
+                              className="story-view-btn"
+                            >
+                              View
+                            </button>
+                            {post.comments && post.comments.length > 0 && (
+                              <span className="story-comments">
+                                {post.comments.length}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="carousel-btn right"
+                  onClick={() => scrollCarousel("right")}
+                  aria-label="Next"
+                >
+                  ›
+                </button>
+              </div>
             </div>
 
             {!searchKeyword && pagination.totalPages > 1 && (

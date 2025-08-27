@@ -14,6 +14,7 @@ import Addpost from "./pages/Addpost";
 import EditPost from "./pages/EditPost";
 import Posts from "./pages/Posts";
 import CategoryManagement from "./pages/CategoryManagement";
+import Admin from "./pages/Admin";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/addpost" element={<Addpost />} />
             <Route path="/edit-post/:postId" element={<EditPost />} />
             <Route path="/categories" element={<CategoryManagement />} />
+            <Route path="/admin" element={<Admin />} />
           </Route>
         </Routes>
         <Footer />

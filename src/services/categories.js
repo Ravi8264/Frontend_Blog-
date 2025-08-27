@@ -17,6 +17,7 @@ export const categoriesService = async (action, data = null, id = null) => {
 
       case "CREATE":
         if (!data) throw new Error("Data is required for CREATE");
+
         response = await myAxios.post("/api/categories/", data);
         return response.data;
 
@@ -35,7 +36,6 @@ export const categoriesService = async (action, data = null, id = null) => {
         throw new Error(`Invalid action: ${action}`);
     }
   } catch (error) {
-    console.error(`Error in categoriesService (${action}):`, error);
     throw error;
   }
 };

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./About.css";
 import aboutImage from "../image/pexels-andreas-gusicov-785963761-30959064.jpg";
+import { getCurrentTokenInfo } from "../services/user_service";
 
 const About = () => {
   useEffect(() => {
@@ -9,6 +10,21 @@ const About = () => {
       document.body.classList.remove("about-page");
     };
   }, []);
+
+  const handleDebugAuth = async () => {
+    try {
+      const tokenInfo = await getCurrentTokenInfo();
+      console.log("Debug Auth Info:", tokenInfo);
+      alert(
+        `Auth Debug Info:\nHas Token: ${tokenInfo.hasToken}\nToken Valid: ${
+          tokenInfo.isValid
+        }\nHas User Data: ${!!tokenInfo.user}`
+      );
+    } catch (error) {
+      console.error("Debug auth error:", error);
+      alert("Error checking auth state");
+    }
+  };
 
   return (
     <div className="about-container">
@@ -128,7 +144,7 @@ const About = () => {
                 <p>
                   <strong>Ravi Shankar Kumar</strong>
                 </p>
-                <p>📧 Email: ravicse19.23@gmail.com</p>
+                <p>📧 Email: ravi.kumar@thinkvista.in</p>
                 <p>📱 Phone: 8709931070</p>
               </div>
             </div>
@@ -146,6 +162,17 @@ const About = () => {
             <div className="cta-buttons">
               <button className="cta-btn primary">Start Writing</button>
               <button className="cta-btn secondary">Explore Posts</button>
+              <button
+                onClick={handleDebugAuth}
+                className="cta-btn secondary"
+                style={{
+                  marginTop: "10px",
+                  fontSize: "12px",
+                  padding: "8px 16px",
+                }}
+              >
+                Debug Auth
+              </button>
             </div>
           </div>
         </div>

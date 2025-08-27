@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ThinkVista Logo</title>
+  <desc id="desc">Modern logo with circular dark blue emblem and white typography</desc>
+
+  <defs>
+    <style type="text/css">
+      <![CDATA[
+        .emblem-circle { fill: url(#tvRadial); filter: url(#softShadow); }
+        .emblem-mark { stroke: #FFFFFF; stroke-width: 10; stroke-linecap: round; }
+        .wordmark-bold { font: 700 54px 'Poppins', sans-serif; fill: #FFFFFF; }
+        .wordmark-light { font: 400 54px 'Poppins', sans-serif; fill: #FFFFFF; }
+      ]]>
+    </style>
+
+    <radialGradient id="tvRadial" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </radialGradient>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Emblem Group -->
+  <g transform="translate(50 40)">
+    <circle class="emblem-circle" cx="60" cy="60" r="60"/>
+    
+    <!-- T Symbol -->
+    <path class="emblem-mark" d="M40 50H80M60 50V90"/>
+    
+    <!-- V Symbol -->
+    <path class="emblem-mark" d="M45 75L60 95L75 75" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Wordmark Group -->
+  <g transform="translate(190 65)">
+    <text class="wordmark-bold" x="0" y="48">Think</text>
+    <text class="wordmark-light" x="185" y="48">Vista</text>
+  </g>
+</svg> 

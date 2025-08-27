@@ -1,24 +1,20 @@
 // API Configuration for different environments
-// ALL ENVIRONMENTS: Direct HTTP calls to backend
-//
-// Note: This will cause Mixed Content warnings in HTTPS production
-// but will work if browser allows insecure content
+// Development: Direct HTTP calls to backend (for local development)
+// Production/Staging: Proxy calls through Netlify (relative URLs)
 const API_CONFIG = {
   development: {
+    // For local development, call backend directly
     baseURL: "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
     timeout: 10000,
   },
   production: {
-    // Direct HTTP calls - same as development
-    baseURL:
-      process.env.REACT_APP_API_URL ||
-      "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
+    // Use relative URLs for Netlify proxy (no baseURL needed)
+    baseURL: "",
     timeout: 15000,
   },
   staging: {
-    baseURL:
-      process.env.REACT_APP_API_URL ||
-      "http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com",
+    // Use relative URLs for Netlify proxy (no baseURL needed)
+    baseURL: "",
     timeout: 12000,
   },
 };
@@ -31,7 +27,7 @@ const getCurrentEnvironment = () => {
   if (process.env.NODE_ENV === "development") {
     return "development";
   }
-  return "development"; // default fallback
+  return "production"; // default to production since we're using HTTPS everywhere
 };
 
 // Export current API configuration

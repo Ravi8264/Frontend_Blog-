@@ -45,7 +45,6 @@ export const commentsService = async (
         throw new Error(`Invalid action: ${action}`);
     }
   } catch (error) {
-    console.error(`Error in commentsService (${action}):`, error);
     throw error;
   }
 };

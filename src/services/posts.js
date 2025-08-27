@@ -19,24 +19,10 @@ export const postsService = async (
           sortDir = "asc",
         } = additionalParams;
 
-        console.log("Making GET_ALL request with params:", {
-          pageNumber,
-          pageSize,
-          sortBy,
-          sortDir,
-        });
-
-        console.log(
-          "Authorization header:",
-          myAxios.defaults.headers.common["Authorization"]
-        );
-
         // For public endpoints, we can make the request without authentication
         response = await myAxios.get(`/api/posts`, {
           params: { pageNumber, pageSize, sortBy, sortDir },
         });
-
-        console.log("GET_ALL response:", response.data);
         return response.data;
 
       case "GET_BY_ID":
@@ -60,34 +46,13 @@ export const postsService = async (
         if (!id) throw new Error("ID is required for UPDATE");
         if (!data) throw new Error("Data is required for UPDATE");
 
-        // Enhanced debug logging
-        console.log("=== UPDATE POST DEBUG ===");
-        console.log("Updating post with ID:", id);
-        console.log("Update data:", JSON.stringify(data, null, 2));
-        console.log(
-          "Authorization header:",
-          myAxios.defaults.headers.common["Authorization"]
-        );
-        console.log("Request URL:", `/api/posts/${id}`);
-        console.log("Request method: PUT");
-        console.log("==========================");
-
         response = await myAxios.put(`/api/posts/${id}`, data);
-        console.log("Update response:", response.data);
         return response.data;
 
       case "DELETE":
         if (!id) throw new Error("ID is required for DELETE");
 
-        // Debug logging for delete operation
-        console.log("Attempting to delete post with ID:", id);
-        console.log(
-          "Authorization header:",
-          myAxios.defaults.headers.common["Authorization"]
-        );
-
         response = await myAxios.delete(`/api/posts/${id}`);
-        console.log("Delete response:", response.data);
         return response.data;
 
       case "GET_BY_CATEGORY":
@@ -103,9 +68,13 @@ export const postsService = async (
       case "SEARCH":
         if (!additionalParams.keyword)
           throw new Error("Keyword is required for SEARCH");
-        response = await myAxios.get(
-          `/api/posts/search/${additionalParams.keyword}`
+
+        // Encode the keyword to handle special characters
+        const encodedKeyword = encodeURIComponent(
+          additionalParams.keyword.trim()
         );
+
+        response = await myAxios.get(`/api/posts/search/${encodedKeyword}`);
         return response.data;
 
       case "UPLOAD_IMAGE":
@@ -126,11 +95,6 @@ export const postsService = async (
         throw new Error(`Invalid action: ${action}`);
     }
   } catch (error) {
-    console.error(`Error in postsService (${action}):`, error);
-    console.error("Full error response:", error.response);
-    console.error("Error status:", error.response?.status);
-    console.error("Error data:", error.response?.data);
-
     // Handle authentication errors specifically
     if (error.response?.status === 401 || error.response?.status === 403) {
       // For public endpoints like GET_ALL, GET_BY_ID, SEARCH, GET_BY_CATEGORY
@@ -141,9 +105,6 @@ export const postsService = async (
         action === "SEARCH" ||
         action === "GET_BY_CATEGORY"
       ) {
-        console.log(
-          "Authentication failed for public endpoint, returning empty results"
-        );
         return {
           content: [],
           totalPages: 0,

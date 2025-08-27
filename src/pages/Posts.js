@@ -95,7 +95,7 @@ const Posts = () => {
   }, [hasMore, loadingMore, searchKeyword]);
 
   const handleAuthError = (error) => {
-    console.error("Authentication error:", error);
+    // Authentication error occurred
     const errorMessage = error.message || "Authentication failed";
 
     if (
@@ -121,19 +121,15 @@ const Posts = () => {
       try {
         const user = await getCurrentUser();
         setCurrentUser(user);
-        console.log("Current user loaded:", user);
       } catch (userError) {
-        console.log(
-          "No user logged in, continuing as guest:",
-          userError.message
-        );
+        // No user logged in, continuing as guest
         setCurrentUser(null);
       }
 
       // Initial page load
       await fetchPosts(false);
     } catch (error) {
-      console.error("Error initializing data:", error);
+      // Error initializing data
       setError("Failed to load posts. Please try again.");
     } finally {
       setLoading(false);
@@ -163,7 +159,7 @@ const Posts = () => {
         append ? [...prev, ...(response.content || [])] : response.content || []
       );
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      // Error fetching posts
 
       if (!handleAuthError(error)) {
         toast.error("Failed to load posts");
@@ -183,22 +179,33 @@ const Posts = () => {
     }
 
     try {
-      const searchResults = await searchPosts(searchKeyword);
-      setPosts(searchResults);
+      setLoading(true);
+      const searchResults = await searchPosts(searchKeyword.trim());
+
+      if (!searchResults || searchResults.length === 0) {
+        toast.info(`No posts found for "${searchKeyword}"`);
+        setPosts([]);
+      } else {
+        setPosts(searchResults);
+        toast.success(
+          `Found ${searchResults.length} post(s) for "${searchKeyword}"`
+        );
+      }
+
       setPagination((prev) => ({
         ...prev,
         totalPages: 1,
-        totalElements: searchResults.length,
+        totalElements: searchResults ? searchResults.length : 0,
         lastPage: true,
         firstPage: true,
       }));
       setHasMore(false);
     } catch (error) {
-      console.error("Error searching posts:", error);
-
       if (!handleAuthError(error)) {
-        toast.error("Failed to search posts");
+        toast.error(`Search failed: ${error.message}`);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -240,12 +247,6 @@ const Posts = () => {
     try {
       // Debug: Log current token and user info
       const tokenInfo = await getCurrentTokenInfo();
-      console.log("Current token info:", tokenInfo);
-      console.log("Current user:", currentUser);
-      console.log(
-        "Post to delete:",
-        posts.find((p) => p.id === deleteModal.postId)
-      );
 
       // Ensure token is valid before making the request
       const isTokenValid = await ensureValidToken();
@@ -274,7 +275,7 @@ const Posts = () => {
       setPosts((prev) => prev.filter((p) => p.id !== deleteModal.postId));
       setDeleteModal({ show: false, postId: null, postTitle: "" });
     } catch (error) {
-      console.error("Error deleting post:", error);
+      // Error deleting post
 
       if (!handleAuthError(error)) {
         // Show the specific error message from the service
@@ -306,8 +307,15 @@ const Posts = () => {
 
   const renderContent = (content) => {
     if (!content) return "";
-    // For display, we can show HTML content
-    return content;
+    // Remove image tags from content to avoid duplicate images
+    // since we already show image in the header
+    let cleanContent = content.replace(/<img[^>]*>/gi, "");
+    // Also remove any standalone image URLs that might be in the content
+    cleanContent = cleanContent.replace(
+      /https?:\/\/[^\s<>"]*\.(?:png|jpe?g|gif|webp|svg)(?:\?[^\s<>"]*)?/gi,
+      ""
+    );
+    return cleanContent;
   };
 
   const toPlainText = (html) => {
@@ -317,18 +325,76 @@ const Posts = () => {
 
   const extractFirstImageUrlFromHtml = (html) => {
     if (!html) return null;
-    const srcMatch = html.match(
-      /src=["']([^"']+\.(?:png|jpe?g|gif|webp|svg))(?:\?[^"']*)?["']/i
-    );
-    if (srcMatch && srcMatch[1]) return srcMatch[1];
-    const hrefMatch = html.match(
-      /href=["']([^"']+\.(?:png|jpe?g|gif|webp|svg))(?:\?[^"']*)?["']/i
-    );
-    if (hrefMatch && hrefMatch[1]) return hrefMatch[1];
-    const urlMatch = html.match(
-      /https?:\/\/[^\s<>"]+\.(?:png|jpe?g|gif|webp|svg)(?:\?[^\s<>"]*)?/i
-    );
-    if (urlMatch && urlMatch[0]) return urlMatch[0];
+
+    // First decode HTML entities
+    const decodedHtml = html
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&#39;/g, "'");
+
+    // Look for src attribute in img tags (more flexible pattern)
+    const srcMatch = decodedHtml.match(/src=["']([^"']+)["']/i);
+    if (srcMatch && srcMatch[1]) {
+      const url = srcMatch[1];
+      // Check if it's a valid image URL (including popular image hosting platforms)
+      if (
+        url.includes("chat.google.com") ||
+        url.includes("drive.google.com") ||
+        url.includes("googleapis.com") ||
+        url.includes("pinimg.com") ||
+        url.includes("pinterest.com") ||
+        url.includes("unsplash.com") ||
+        url.includes("pexels.com") ||
+        url.includes("imgur.com") ||
+        /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url) ||
+        url.includes("image") ||
+        url.includes("photo")
+      ) {
+        return url;
+      }
+    }
+
+    // Look for href attribute
+    const hrefMatch = decodedHtml.match(/href=["']([^"']+)["']/i);
+    if (hrefMatch && hrefMatch[1]) {
+      const url = hrefMatch[1];
+      if (
+        url.includes("chat.google.com") ||
+        url.includes("drive.google.com") ||
+        url.includes("pinimg.com") ||
+        url.includes("pinterest.com") ||
+        url.includes("unsplash.com") ||
+        url.includes("pexels.com") ||
+        url.includes("imgur.com") ||
+        /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url)
+      ) {
+        return url;
+      }
+    }
+
+    // Look for standalone URLs in the content
+    const urlMatch = decodedHtml.match(/https?:\/\/[^\s<>"]+/i);
+    if (urlMatch && urlMatch[0]) {
+      const url = urlMatch[0];
+      if (
+        url.includes("chat.google.com") ||
+        url.includes("drive.google.com") ||
+        url.includes("googleapis.com") ||
+        url.includes("pinimg.com") ||
+        url.includes("pinterest.com") ||
+        url.includes("unsplash.com") ||
+        url.includes("pexels.com") ||
+        url.includes("imgur.com") ||
+        /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url) ||
+        url.includes("image") ||
+        url.includes("photo")
+      ) {
+        return url;
+      }
+    }
+
     return null;
   };
 
@@ -388,7 +454,7 @@ const Posts = () => {
       // Refresh the posts to show the new comment
       await fetchPosts(false);
     } catch (error) {
-      console.error("Error adding comment:", error);
+      // Error adding comment
       if (!handleAuthError(error)) {
         toast.error("Failed to add comment");
       }
@@ -519,24 +585,19 @@ const Posts = () => {
                     </div>
                     {post.comments && post.comments.length > 0 && (
                       <div className="comments-list">
-                        {post.comments.slice(0, 1).map((comment, index) => (
+                        {post.comments.map((comment, index) => (
                           <div
                             key={comment.id || index}
                             className="comment-item"
                           >
                             <div className="comment-author">
-                              {comment.user?.name || "User"}
+                              {comment.user?.name || "Anonymous User"}
                             </div>
                             <div className="comment-text">
                               {toPlainText(comment.content)}
                             </div>
                           </div>
                         ))}
-                        {post.comments.length > 1 && (
-                          <div className="more-comments-note">
-                            +{post.comments.length - 1} more comment(s)
-                          </div>
-                        )}
                       </div>
                     )}
 

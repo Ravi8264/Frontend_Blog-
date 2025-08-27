@@ -62,9 +62,6 @@ const Navbar = () => {
             (role) => role.name === "ROLE_ADMIN" || role.name === "ADMIN"
           );
           setIsAdmin(hasAdminRole);
-
-          console.log("User roles:", user?.roles);
-          console.log("Is Admin:", hasAdminRole);
         } catch (error) {
           console.error("Error checking user role:", error);
           setCurrentUser(null);
@@ -90,7 +87,11 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          MyBlog
+          <img
+            src="/thinkvista-logo-compact.svg"
+            alt="ThinkVista"
+            className="navbar-logo-img"
+          />
         </Link>
 
         {/* Desktop Menu */}
@@ -121,9 +122,14 @@ const Navbar = () => {
                 Add Post
               </Link>
               {isAdmin && (
-                <Link to="/categories" className="navbar-link admin-link">
-                  Categories
-                </Link>
+                <>
+                  <Link to="/categories" className="navbar-link admin-link">
+                    Categories
+                  </Link>
+                  <Link to="/admin" className="navbar-link admin-link">
+                    Admin Panel
+                  </Link>
+                </>
               )}
               <Link to="/profileinfo" className="navbar-link">
                 Profile
@@ -194,13 +200,22 @@ const Navbar = () => {
                   Add Post
                 </Link>
                 {isAdmin && (
-                  <Link
-                    to="/categories"
-                    onClick={closeMenu}
-                    className="navbar-mobile-link admin-link"
-                  >
-                    Categories
-                  </Link>
+                  <>
+                    <Link
+                      to="/categories"
+                      onClick={closeMenu}
+                      className="navbar-mobile-link admin-link"
+                    >
+                      Categories
+                    </Link>
+                    <Link
+                      to="/admin"
+                      onClick={closeMenu}
+                      className="navbar-mobile-link admin-link"
+                    >
+                      Admin Panel
+                    </Link>
+                  </>
                 )}
                 <Link
                   to="/profileinfo"

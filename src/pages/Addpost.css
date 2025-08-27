@@ -2,7 +2,7 @@
   max-width: 960px;
   margin: 90px auto 40px;
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: #0b0f19;
 }
 
@@ -221,5 +221,185 @@ body.addpost-dark .navbar-mobile-menu { background: #0b0f19; }
 @media (max-width: 768px) {
   .addpost-container { margin: 80px 12px 28px; padding: 12px; }
   .addpost-container form { padding: 16px; }
+}
+
+/* Image Mode Selector Styles */
+.image-mode-selector {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: #0b1220;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #e5e7eb;
+  transition: color 0.3s ease;
+}
+
+.radio-label:hover {
+  color: #3b82f6;
+}
+
+.radio-label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.radio-label span {
+  font-size: 14px;
+}
+
+/* Image Link Input Styles */
+.image-link-input {
+  display: grid;
+  gap: 8px;
+}
+
+.image-link-input input {
+  padding: 12px 14px;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #0b1220;
+  color: #e5e7eb;
+}
+
+.image-link-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #0f172a;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Image Upload Input Styles */
+.image-upload-input {
+  display: grid;
+  gap: 12px;
+}
+
+.image-upload-input input[type="file"] {
+  padding: 12px 14px;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #0b1220;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.image-upload-input input[type="file"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #0f172a;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.image-upload-input input[type="file"]::-webkit-file-upload-button {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+.image-upload-input input[type="file"]::-webkit-file-upload-button:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+/* Image Preview Styles */
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #0b1220;
+  border: 2px solid #1f2937;
+  border-radius: 8px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 200px;
+  border-radius: 6px;
+  object-fit: contain;
+  border: 1px solid #1f2937;
+  background-color: #0b1220;
+}
+
+.clear-image-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.clear-image-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+/* Light theme adjustments for image interface */
+body.light-theme .image-mode-selector {
+  background: #f8fafc;
+  border-color: #d1d5db;
+}
+
+body.light-theme .radio-label {
+  color: #1f2937;
+}
+
+body.light-theme .radio-label:hover {
+  color: #3b82f6;
+}
+
+body.light-theme .image-link-input input,
+body.light-theme .image-upload-input input[type="file"] {
+  border-color: #d1d5db;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+body.light-theme .image-link-input input:focus,
+body.light-theme .image-upload-input input[type="file"]:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+}
+
+body.light-theme .image-preview {
+  background: #f8fafc;
+  border-color: #d1d5db;
+}
+
+body.light-theme .image-preview img {
+  border-color: #d1d5db;
+}
+
+/* Responsive adjustments for image interface */
+@media (max-width: 768px) {
+  .image-mode-selector {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .image-preview img {
+    height: 150px;
+  }
 }
 

@@ -159,7 +159,7 @@ const Footer = () => {
             </span>
             <span className="location-item">
               <i className="bx bx-envelope location-icon"></i>
-              ravicse19.23@gmail.com
+              ravi.kumar@thinkvista.in
             </span>
           </div>
         </div>

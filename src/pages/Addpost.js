@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import JoditEditor from "jodit-react";
 import { getCategories } from "../services/categories";
-import { createPost } from "../services/posts";
+import { createPost, uploadPostImage, updatePost } from "../services/posts";
 import { getCurrentUser } from "../services/user_service";
 import { useAuth } from "../context/AuthContext";
 import "./Addpost.css";
@@ -31,12 +31,17 @@ const Addpost = () => {
   const [error, setError] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
+  // New state for image handling
+  const [imageMode, setImageMode] = useState("link"); // "link" or "upload"
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   // Jodit editor configuration
   const config = useMemo(
     () => ({
       readonly: false,
       placeholder:
-        "Write your post content here... (minimum 10 characters)\n\nContact: Ravi Shankar Kumar\nPhone: 8709931070\nEmail: ravicse19.23@gmail.com",
+        "Write your post content here... (minimum 10 characters)\n\nContact: Ravi Shankar Kumar\nPhone: 8709931070\nEmail: ravi.kumar@thinkvista.in",
       height: 400,
       toolbar: true,
       spellcheck: true,
@@ -93,7 +98,7 @@ const Addpost = () => {
   // Auth error handler (stable)
   const handleAuthError = useCallback(
     (error) => {
-      console.error("Authentication error:", error);
+      // Authentication error occurred
       const errorMessage = error.message || "Authentication failed";
 
       if (
@@ -132,9 +137,9 @@ const Addpost = () => {
       // Get categories
       const categoriesData = await getCategories();
       setCategories(categoriesData);
-      console.log("Categories fetched:", categoriesData);
+      // Categories fetched successfully
     } catch (error) {
-      console.error("Error initializing data:", error);
+      // Error initializing data
 
       if (!handleAuthError(error)) {
         setError("Failed to load required data. Please try again.");
@@ -163,6 +168,50 @@ const Addpost = () => {
     }));
   };
 
+  // Image handling functions
+  const handleImageModeChange = (mode) => {
+    setImageMode(mode);
+    // Clear previous image data when switching modes
+    if (mode === "link") {
+      setImageFile(null);
+      setImagePreview(null);
+    } else {
+      setFormData(prev => ({ ...prev, imageName: "" }));
+    }
+  };
+
+  const handleImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error("Please select a valid image file");
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image file size must be less than 5MB");
+        return;
+      }
+
+      setImageFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImageData = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    setFormData(prev => ({ ...prev, imageName: "" }));
+  };
+
   const validateForm = () => {
     if (!formData.title.trim()) {
       toast.error("Title is required");
@@ -189,10 +238,27 @@ const Addpost = () => {
       toast.error("Please select a category");
       return false;
     }
-    if (!formData.imageName.trim()) {
-      toast.error("Image name is required");
-      return false;
+    
+    // Validate image based on mode
+    if (imageMode === "link") {
+      if (!formData.imageName.trim()) {
+        toast.error("Image link is required");
+        return false;
+      }
+      // Basic URL validation
+      try {
+        new URL(formData.imageName.trim());
+      } catch {
+        toast.error("Please enter a valid image URL");
+        return false;
+      }
+    } else {
+      if (!imageFile) {
+        toast.error("Please select an image file to upload");
+        return false;
+      }
     }
+    
     return true;
   };
 
@@ -211,11 +277,55 @@ const Addpost = () => {
     try {
       setSubmitting(true);
 
-      // Prepare post data matching PostDto structure
+      let imageName = "default-post.jpg";
+
+      if (imageMode === "link") {
+        // Use the provided image link
+        imageName = formData.imageName.trim();
+      } else {
+        // Upload image file first
+        if (imageFile) {
+          // Create post first with a temporary image name
+          const tempPostData = {
+            title: formData.title.trim(),
+            content: formData.content.trim(),
+            imageName: "temp-image.jpg",
+          };
+
+          const createdPost = await createPost(
+            tempPostData,
+            currentUser.id,
+            formData.categoryId
+          );
+
+          // Upload the image and get the image name
+          const uploadResult = await uploadPostImage(createdPost.id, imageFile);
+          imageName = uploadResult.imageName || "default-post.jpg";
+
+          // Update the post with the correct image name
+          await updatePost(createdPost.id, {
+            ...tempPostData,
+            imageName: imageName,
+          });
+
+          toast.success("Post created successfully!");
+          clearImageData();
+          setFormData({
+            title: "",
+            content: "",
+            imageName: "",
+            categoryId: "",
+          });
+          navigate("/posts");
+          return;
+        }
+      }
+
+      // For link mode, create post directly
       const postData = {
         title: formData.title.trim(),
         content: formData.content.trim(),
-        imageName: formData.imageName.trim() || "default-post.jpg",
+        imageName: imageName,
       };
 
       // Create post
@@ -225,7 +335,7 @@ const Addpost = () => {
         formData.categoryId
       );
 
-      console.log("Post created successfully:", createdPost);
+      // Post created successfully
       toast.success("Post created successfully!");
 
       // Reset form
@@ -239,7 +349,7 @@ const Addpost = () => {
       // Navigate to posts page to see the created post
       navigate("/posts");
     } catch (error) {
-      console.error("Error creating post:", error);
+      // Error creating post
       const errorMessage =
         error.response?.data?.message ||
         "Failed to create post. Please try again.";
@@ -256,6 +366,12 @@ const Addpost = () => {
       imageName: "",
       categoryId: "",
     });
+    if (editor.current) {
+      editor.current.value = "";
+    }
+    // Clear image data
+    clearImageData();
+    setImageMode("link");
   };
 
   if (loading) {
@@ -353,20 +469,80 @@ const Addpost = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="imageName">Image Name *</label>
-          <input
-            type="text"
-            id="imageName"
-            name="imageName"
-            placeholder="Enter image name (required) - Contact: 8709931070"
-            value={formData.imageName}
-            onChange={handleChange}
-            required
-          />
-          <small>
-            Image name is required. If no image is provided, a default image
-            will be shown.
-          </small>
+          <label>Image *</label>
+          
+          {/* Image Mode Selection */}
+          <div className="image-mode-selector">
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="imageMode"
+                value="link"
+                checked={imageMode === "link"}
+                onChange={() => handleImageModeChange("link")}
+              />
+              <span>Provide Image Link</span>
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="imageMode"
+                value="upload"
+                checked={imageMode === "upload"}
+                onChange={() => handleImageModeChange("upload")}
+              />
+              <span>Upload Image File</span>
+            </label>
+          </div>
+
+          {/* Image Link Input */}
+          {imageMode === "link" && (
+            <div className="image-link-input">
+              <input
+                type="url"
+                id="imageName"
+                name="imageName"
+                placeholder="Enter image URL (required) - Contact: 8709931070"
+                value={formData.imageName}
+                onChange={handleChange}
+                required
+              />
+              <small>
+                Please provide a valid image URL. If no image is provided, a default image will be shown.
+              </small>
+            </div>
+          )}
+
+          {/* Image Upload Input */}
+          {imageMode === "upload" && (
+            <div className="image-upload-input">
+              <input
+                type="file"
+                id="imageFile"
+                name="imageFile"
+                accept="image/*"
+                onChange={handleImageFileChange}
+                required
+              />
+              <small>
+                Select an image file (JPG, PNG, GIF, etc.) - Max size: 5MB
+              </small>
+              
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="image-preview">
+                  <img src={imagePreview} alt="Preview" />
+                  <button
+                    type="button"
+                    onClick={clearImageData}
+                    className="clear-image-btn"
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="form-buttons">

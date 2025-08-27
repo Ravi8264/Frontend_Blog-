@@ -1,1 +1,5 @@
+# API proxy - redirect /api/* calls to backend HTTP server
+/api/* http://blogapp-env.eba-fyin5khm.us-east-1.elasticbeanstalk.com/api/:splat 200
+
+# Handle all other routes for SPA (Single Page Application)
 /* /index.html 200

@@ -21,8 +21,10 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const status = await isLogin();
+
       setIsLoggedIn(status);
     } catch (error) {
+      console.error("Auth check error:", error);
       setIsLoggedIn(false);
     } finally {
       setIsLoading(false);
@@ -35,11 +37,28 @@ export const AuthProvider = ({ children }) => {
       if (res?.token) {
         setIsLoggedIn(true);
         toast.success("Login successful!");
+        console.log("Login successful, redirecting to home");
         navigate("/"); // Redirect to home page after successful login
+      } else {
+        console.log("Login response missing token:", res);
       }
       return res;
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
+      console.error("Login error:", error);
+      const errorMessage = error?.response?.data?.message || "Login failed";
+
+      if (
+        errorMessage.includes("Invalid credentials") ||
+        errorMessage.includes("Bad credentials")
+      ) {
+        toast.error(
+          "Invalid email or password. Please check your credentials and try again."
+        );
+      } else if (errorMessage.includes("User not found")) {
+        toast.error("No account found with this email. Please sign up first.");
+      } else {
+        toast.error(errorMessage);
+      }
       return null;
     }
   };
@@ -47,10 +66,22 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       const res = await doSignup(userData);
-      toast.success("Signup successful!");
+      toast.success("Signup successful! Please login with your credentials.");
+      // Navigate to login page after successful signup
+      navigate("/auth?mode=login");
       return res;
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Signup failed");
+      // Handle specific error cases
+      const errorMessage = error?.response?.data?.message || "Signup failed";
+
+      if (
+        errorMessage.includes("duplicate key value") ||
+        errorMessage.includes("already exists")
+      ) {
+        toast.error("This email address is already registered.");
+      } else {
+        toast.error(errorMessage);
+      }
       return null;
     }
   };

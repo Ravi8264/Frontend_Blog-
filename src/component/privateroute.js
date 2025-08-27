@@ -4,6 +4,13 @@ import { useAuth } from "../context/AuthContext";
 const PrivateRoute = () => {
   const { isLoggedIn, isLoading } = useAuth();
 
+  console.log(
+    "PrivateRoute - isLoggedIn:",
+    isLoggedIn,
+    "isLoading:",
+    isLoading
+  );
+
   // Show loading while checking authentication
   if (isLoading) {
     return (
@@ -33,7 +40,13 @@ const PrivateRoute = () => {
   }
 
   // Check if user is authenticated
-  return isLoggedIn ? <Outlet /> : <Navigate to="/auth" replace />;
+  if (!isLoggedIn) {
+    console.log("User not logged in, redirecting to /auth");
+    return <Navigate to="/auth" replace />;
+  }
+
+  console.log("User is logged in, rendering protected route");
+  return <Outlet />;
 };
 
 export default PrivateRoute;

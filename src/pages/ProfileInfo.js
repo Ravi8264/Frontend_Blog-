@@ -14,10 +14,10 @@ function ProfileInfo() {
       try {
         setLoading(true);
         const userData = await getCurrentUser();
-        console.log("User profile data:", userData);
+        // User profile data loaded
         setUserProfile(userData);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        // Error fetching user profile
         setError("Failed to load profile data");
       } finally {
         setLoading(false);
@@ -76,7 +76,7 @@ function ProfileInfo() {
             </div>
             <div className="profile-info-item">
               <strong className="profile-info-label">Email:</strong>{" "}
-              {userProfile.email || "ravicse19.23@gmail.com"}
+              {userProfile.email || "ravi.kumar@thinkvista.in"}
             </div>
             <div className="profile-info-item">
               <strong className="profile-info-label">Phone:</strong>{" "}
@@ -84,8 +84,7 @@ function ProfileInfo() {
             </div>
             <div className="profile-info-item">
               <strong className="profile-info-label">About:</strong>{" "}
-              {userProfile.about ||
-                "Contact: 8709931070 | Email: ravicse19.23@gmail.com"}
+              {userProfile.about}
             </div>
           </div>
 

@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import "./CategoryManagement.css";
 
 const CategoryManagement = () => {
-  const { logout } = useAuth();
+  const { logout, isLoggedIn } = useAuth();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -60,7 +60,7 @@ const CategoryManagement = () => {
       const data = await getCategories();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      // Error fetching categories
       setError("Failed to load categories. Please try again.");
     } finally {
       setLoading(false);
@@ -98,6 +98,27 @@ const CategoryManagement = () => {
     if (!guardAdmin()) return;
 
     try {
+      // Import and check token status
+      const { ensureValidToken } = await import("../services/user_service");
+
+      const tokenValid = await ensureValidToken();
+
+      if (!tokenValid) {
+        // Try to refresh token one more time
+        try {
+          const { refreshAccessToken } = await import(
+            "../services/user_service"
+          );
+
+          await refreshAccessToken();
+          toast.success("Token refreshed successfully!");
+        } catch (refreshError) {
+          // Token refresh failed
+          toast.error("Authentication expired. Please login again.");
+          return;
+        }
+      }
+
       if (editingCategory) {
         await updateCategory(editingCategory.id, formData);
         toast.success("Category updated successfully!");
@@ -109,7 +130,7 @@ const CategoryManagement = () => {
       resetForm();
       fetchCategories();
     } catch (error) {
-      console.error("Error saving category:", error);
+      // Error saving category
       const message =
         error?.response?.data?.message ||
         error?.message ||
@@ -146,7 +167,7 @@ const CategoryManagement = () => {
       fetchCategories();
       setDeleteModal({ show: false, categoryId: null, categoryTitle: "" });
     } catch (error) {
-      console.error("Error deleting category:", error);
+      // Error deleting category
       toast.error("Failed to delete category. Please try again.");
     }
   };

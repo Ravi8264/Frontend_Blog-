@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>ThinkVista</title>
+  
+  <defs>
+    <radialGradient id="tvRadial" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Emblem Circle -->
+  <circle cx="16" cy="16" r="14" fill="url(#tvRadial)"/>
+
+  <!-- T + V Monogram (white strokes) -->
+  <g stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <!-- T -->
+    <path d="M8 12H24M16 12V24"/>
+    <!-- V -->
+    <path d="M10 18L16 22L22 18" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -5,8 +5,8 @@
   text-align: center;
   min-height: 100vh;
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-  margin-top: 20px;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+  margin-top: 80px; /* Increased from 20px to 80px to account for fixed navbar */
 }
 
 /* Light Theme for Profile Info */
@@ -59,6 +59,43 @@ body.light-theme .roles-list {
 body.light-theme .role-badge {
   background: #e5e7eb;
   color: #374151;
+}
+
+body.light-theme .profile-info-item {
+  color: #1f2937;
+}
+
+body.light-theme .profile-info-label {
+  color: #374151;
+}
+
+body.light-theme .section-title {
+  color: #1f2937;
+}
+
+body.light-theme .profile-section {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+body.light-theme .roles-section,
+body.light-theme .status-section {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+body.light-theme .profile-subtitle {
+  color: #6b7280;
+}
+
+body.light-theme .profile-title {
+  color: #1f2937;
+}
+
+body.light-theme .status-active {
+  background-color: #10b981;
+  color: #ffffff;
+  border: 1px solid #10b981;
 }
 
 .profile-card {
@@ -114,6 +151,7 @@ body.light-theme .role-badge {
   margin-bottom: 15px;
   text-align: left;
   line-height: 1.6;
+  color: #e5e7eb;
 }
 
 .profile-info-label {

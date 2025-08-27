@@ -40,7 +40,6 @@ export const usersService = async (action, data = null, id = null) => {
         throw new Error(`Invalid action: ${action}`);
     }
   } catch (error) {
-    console.error(`Error in usersService (${action}):`, error);
     throw error;
   }
 };

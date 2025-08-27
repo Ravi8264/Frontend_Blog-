@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
+import { useSearchParams } from "react-router-dom";
 import "./Auth.css";
 
 // Import images
@@ -9,6 +10,7 @@ import loginImage from "../image/jess-bailey-q10VITrVYUM-unsplash.jpg";
 
 const Auth = () => {
   const { login, signup } = useAuth();
+  const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +19,7 @@ const Auth = () => {
     confirmPassword: "",
     bio: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,11 +31,12 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Clear previous errors
 
     try {
       if (isLogin) {
         if (!formData.email || !formData.password) {
-          toast.error("Please enter email and password");
+          setErrorMessage("Please enter email and password");
           return;
         }
 
@@ -40,15 +44,20 @@ const Auth = () => {
           email: formData.email,
           password: formData.password,
         });
-        if (!res) return; // login already handled error toast
+        if (!res) {
+          setErrorMessage(
+            "Invalid email or password. Please check your credentials and try again."
+          );
+          return;
+        }
       } else {
         if (formData.password !== formData.confirmPassword) {
-          toast.error("Passwords do not match");
+          setErrorMessage("Passwords do not match");
           return;
         }
 
         if (!formData.name || !formData.email || !formData.password) {
-          toast.error("Please fill all required fields");
+          setErrorMessage("Please fill all required fields");
           return;
         }
 
@@ -58,7 +67,10 @@ const Auth = () => {
           password: formData.password,
           bio: formData.bio,
         });
-        if (!res) return; // signup already handled error toast
+        if (!res) {
+          setErrorMessage("This email address is already registered.");
+          return;
+        }
 
         setFormData({
           name: "",
@@ -71,7 +83,7 @@ const Auth = () => {
     } catch (err) {
       const message =
         err?.response?.data?.message || err?.message || "Something went wrong";
-      toast.error(message);
+      setErrorMessage(message);
     }
   };
 
@@ -85,6 +97,16 @@ const Auth = () => {
       bio: "",
     });
   };
+
+  // Check URL parameters for mode
+  useEffect(() => {
+    const mode = searchParams.get("mode");
+    if (mode === "login") {
+      setIsLogin(true);
+    } else if (mode === "signup") {
+      setIsLogin(false);
+    }
+  }, [searchParams]);
 
   // Ensure navbar is dark on the auth page
   useEffect(() => {
@@ -135,6 +157,13 @@ const Auth = () => {
               </p>
             </div>
 
+            {/* Error Message Display */}
+            {errorMessage && (
+              <div className="auth-error-message">
+                <p>{errorMessage}</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="auth-form">
               {!isLogin && (
                 <div className="form-group">
@@ -158,7 +187,7 @@ const Auth = () => {
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="ravicse19.23@gmail.com"
+                  placeholder="ravi.kumar@thinkvista.in"
                   value={formData.email}
                   onChange={handleChange}
                   required

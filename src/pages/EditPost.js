@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import JoditEditor from "jodit-react";
 import { getCategories } from "../services/categories";
-import { getPostById, updatePost } from "../services/posts";
+import { getPostById, updatePost, uploadPostImage } from "../services/posts";
 import { getCurrentUser, ensureValidToken } from "../services/user_service";
 import { myAxios } from "../services/helper";
 import "./Addpost.css";
@@ -26,12 +26,17 @@ const EditPost = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [post, setPost] = useState(null);
 
+  // Image handling state
+  const [imageMode, setImageMode] = useState("link"); // "link" or "upload"
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   // Jodit editor configuration
   const config = useMemo(
     () => ({
       readonly: false,
       placeholder:
-        "Write your post content here... (minimum 10 characters)\n\nContact: Ravi Shankar Kumar\nPhone: 8709931070\nEmail: ravicse19.23@gmail.com",
+        "Write your post content here... (minimum 10 characters)\n\nContact: Ravi Shankar Kumar\nPhone: 8709931070\nEmail: ravi.kumar@thinkvista.in",
       height: 400,
       toolbar: true,
       spellcheck: true,
@@ -99,11 +104,7 @@ const EditPost = () => {
       setCurrentUser(user);
 
       // Debug: Check if token is set
-      console.log("Current user:", user);
-      console.log(
-        "Authorization header:",
-        myAxios.defaults.headers.common["Authorization"]
-      );
+      // Current user and authorization header checked
 
       // Get categories
       const categoriesData = await getCategories();
@@ -128,7 +129,7 @@ const EditPost = () => {
         categoryId: postData.category?.id?.toString() || "",
       });
     } catch (error) {
-      console.error("Error initializing data:", error);
+      // Error initializing data
       setError("Failed to load post data. Please try again.");
     } finally {
       setLoading(false);
@@ -148,6 +149,50 @@ const EditPost = () => {
       ...prev,
       content: newContent,
     }));
+  };
+
+  // Image handling functions
+  const handleImageModeChange = (mode) => {
+    setImageMode(mode);
+    // Clear previous image data when switching modes
+    if (mode === "link") {
+      setImageFile(null);
+      setImagePreview(null);
+    } else {
+      setFormData((prev) => ({ ...prev, imageName: "" }));
+    }
+  };
+
+  const handleImageFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select a valid image file");
+        return;
+      }
+
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image file size must be less than 5MB");
+        return;
+      }
+
+      setImageFile(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImageData = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    setFormData((prev) => ({ ...prev, imageName: "" }));
   };
 
   const validateForm = () => {
@@ -213,13 +258,13 @@ const EditPost = () => {
       // Update post
       const updatedPost = await updatePost(postId, postData);
 
-      console.log("Post updated successfully:", updatedPost);
+      // Post updated successfully
       toast.success("Post updated successfully!");
 
       // Navigate to posts page to see the updated post
       navigate("/posts");
     } catch (error) {
-      console.error("Error updating post:", error);
+      // Error updating post
       const errorMessage =
         error.response?.data?.message ||
         "Failed to update post. Please try again.";

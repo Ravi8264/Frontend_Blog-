@@ -4,7 +4,7 @@
   padding-top: 120px;
   background-color: #0b0f19;
   color: #e5e7eb;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Light Theme for Category Management */
@@ -13,7 +13,12 @@ body.light-theme .category-management-container {
   color: #1f2937;
 }
 
-body.light-theme .category-header,
+body.light-theme .category-header {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 body.light-theme .category-form-container,
 body.light-theme .categories-list,
 body.light-theme .category-card {
@@ -48,6 +53,14 @@ body.light-theme .category-actions {
   border-top: 1px solid #e5e7eb;
 }
 
+body.light-theme .category-content h3 {
+  color: #1f2937;
+}
+
+body.light-theme .category-content p {
+  color: #4b5563;
+}
+
 body.light-theme .delete-modal-content {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -57,6 +70,62 @@ body.light-theme .delete-modal-content {
 body.light-theme .delete-modal-content h2,
 body.light-theme .delete-modal-content p {
   color: #1f2937;
+}
+
+body.light-theme .add-category-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 1px solid #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+body.light-theme .add-category-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  border: 1px solid #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+}
+
+body.light-theme .info-banner {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+body.light-theme .category-form-container h2 {
+  color: #1f2937;
+}
+
+body.light-theme .category-form-container {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+body.light-theme .categories-list {
+  background-color: #ffffff;
+}
+
+body.light-theme .categories-list h2 {
+  color: #1f2937;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group textarea {
+  background-color: #ffffff;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+}
+
+body.light-theme .form-group input::placeholder,
+body.light-theme .form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+body.light-theme .no-categories {
+  color: #6b7280;
+}
+
+body.light-theme .no-categories p {
+  color: #6b7280;
 }
 
 .category-header {
