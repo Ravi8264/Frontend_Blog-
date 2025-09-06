@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./About.css";
-import aboutImage from "../image/pexels-andreas-gusicov-785963761-30959064.jpg";
-import { getCurrentTokenInfo } from "../services/user_service";
+import aboutImage from "../../image/pexels-andreas-gusicov-785963761-30959064.jpg";
+import { getCurrentTokenInfo } from "../../services/user_service";
 
 const About = () => {
   useEffect(() => {

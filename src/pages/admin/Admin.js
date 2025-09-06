@@ -6,8 +6,8 @@ import {
   makeUserAdmin,
   removeAdminRole,
   deleteUser,
-} from "../services/admin";
-import { getCurrentUser } from "../services/user_service";
+} from "../../services/admin";
+import { getCurrentUser } from "../../services/user_service";
 import "./Admin.css";
 
 const Admin = () => {

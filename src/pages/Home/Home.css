@@ -90,7 +90,7 @@ body.home-page .navbar-hamburger span {
 
 .blog-header-image {
   height: 500px;
-  background-image: url('../image/thought-catalog-505eectW54k-unsplash.jpg');
+  background-image: url('../../image/thought-catalog-505eectW54k-unsplash.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -115,7 +115,7 @@ body.home-page .navbar-hamburger span {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('../image/113094-OOJRXS-328.jpg') center/cover no-repeat;
+  background: url('../../image/113094-OOJRXS-328.jpg') center/cover no-repeat;
   filter: blur(0.5px);
 }
 

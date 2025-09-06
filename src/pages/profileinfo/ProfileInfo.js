@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getCurrentUser } from "../services/user_service";
-import { useAuth } from "../context/AuthContext";
+import { getCurrentUser } from "../../services/user_service";
+import { useAuth } from "../../context/AuthContext";
 import "./ProfileInfo.css";
 
 function ProfileInfo() {

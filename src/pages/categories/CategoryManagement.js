@@ -5,9 +5,9 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
-} from "../services/categories";
-import { getCurrentUser } from "../services/user_service";
-import { useAuth } from "../context/AuthContext";
+} from "../../services/categories";
+import { getCurrentUser } from "../../services/user_service";
+import { useAuth } from "../../context/AuthContext";
 import "./CategoryManagement.css";
 
 const CategoryManagement = () => {
@@ -99,7 +99,7 @@ const CategoryManagement = () => {
 
     try {
       // Import and check token status
-      const { ensureValidToken } = await import("../services/user_service");
+      const { ensureValidToken } = await import("../../services/user_service");
 
       const tokenValid = await ensureValidToken();
 
@@ -107,7 +107,7 @@ const CategoryManagement = () => {
         // Try to refresh token one more time
         try {
           const { refreshAccessToken } = await import(
-            "../services/user_service"
+            "../../services/user_service"
           );
 
           await refreshAccessToken();

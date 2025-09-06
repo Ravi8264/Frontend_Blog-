@@ -86,34 +86,8 @@ export const getRefreshTokenFromDB = async () => {
   return await db.do("get", "refreshToken");
 };
 
-// Save both tokens at once
-export const saveTokensToDB = async (authData) => {
-  const { token, refreshToken } = authData;
 
-  const promises = [];
-  if (token) {
-    promises.push(db.do("set", "authToken", token));
-  }
-  if (refreshToken) {
-    promises.push(db.do("set", "refreshToken", refreshToken));
-  }
-
-  return await Promise.all(promises);
-};
-
-// Get both tokens at once
-export const getTokensFromDB = async () => {
-  const [authToken, refreshToken] = await Promise.all([
-    db.do("get", "authToken"),
-    db.do("get", "refreshToken"),
-  ]);
-
-  return {
-    token: authToken,
-    refreshToken: refreshToken,
-  };
-};
-
+// User Data functions
 export const saveUserData = async (userData) => {
   return await db.do("set", "userData", userData);
 };
@@ -122,60 +96,7 @@ export const getUserDataFromDB = async () => {
   return await db.do("get", "userData");
 };
 
-// Save complete auth response (token, refreshToken, and user data)
-export const saveCompleteAuthData = async (authResponse) => {
-  const { token, refreshToken, user } = authResponse;
-
-  const promises = [];
-  if (token) {
-    promises.push(db.do("set", "authToken", token));
-  }
-  if (refreshToken) {
-    promises.push(db.do("set", "refreshToken", refreshToken));
-  }
-  if (user) {
-    promises.push(db.do("set", "userData", user));
-  }
-
-  return await Promise.all(promises);
-};
-
-// Get complete auth data
-export const getCompleteAuthData = async () => {
-  const [authToken, refreshToken, userData] = await Promise.all([
-    db.do("get", "authToken"),
-    db.do("get", "refreshToken"),
-    db.do("get", "userData"),
-  ]);
-
-  return {
-    token: authToken,
-    refreshToken: refreshToken,
-    user: userData,
-  };
-};
-
-// Clear only refresh token
-export const clearRefreshTokenFromDB = async () => {
-  return await db.do("delete", "refreshToken");
-};
-
-// Clear all auth data including refresh token
-export const clearAllAuthDataFromDB = async () => {
-  await db.do("delete", "authToken");
-  await db.do("delete", "refreshToken");
-  await db.do("delete", "userData");
-  await db.do("delete", "routeLogs");
-  console.log("All auth data cleared from IndexedDB (including refresh token)");
-};
-
-// Clear entire database - use this if you want to completely wipe all data
-export const clearEntireDB = async () => {
-  return await db.do("clear");
-};
-
-export const storeRouteLogs = async (routeLogsData) => {
-  if (routeLogsData) {
-    await db.do("set", "routeLogs", routeLogsData);
-  }
+// Clear all user-related data
+export const clearUserDataFromDB = async () => {
+  await db.do("clear");
 };

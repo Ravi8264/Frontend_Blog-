@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
 import "./Auth.css";
 
 // Import images
-import signupImage from "../image/ben-kolde-FaPxZ88yZrw-unsplash.jpg";
-import loginImage from "../image/jess-bailey-q10VITrVYUM-unsplash.jpg";
+import signupImage from "../../image/ben-kolde-FaPxZ88yZrw-unsplash.jpg";
+import loginImage from "../../image/jess-bailey-q10VITrVYUM-unsplash.jpg";
 
 const Auth = () => {
   const { login, signup } = useAuth();

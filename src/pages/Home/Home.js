@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getAllPosts, searchPosts } from "../services/posts";
+import { getAllPosts, searchPosts } from "../../services/posts";
 // import { createComment } from "../services/comments";
-import { getCurrentUser } from "../services/user_service";
-import HeroCarousel from "../component/HeroCarousel/HeroCarousel";
-import placeholderImg from "../image/image.png";
+import { getCurrentUser } from "../../services/user_service";
+import HeroCarousel from "../../component/HeroCarousel/HeroCarousel";
+import placeholderImg from "../../image/image.png";
 import "./Home.css";
 
 // Import a blog header image
